@@ -106,38 +106,26 @@
         ]
     ];
 
-    // Формируем массив из названий животных, состоящих из двух слов (названия содержат пробел)
-    $twoWordAnimals = [];
+    // Создаем два массива - первый содержит первое слово названия, второй - соответственно второе:
+    $firstWordArray = [];
+    $secondWordArray = [];
     foreach($animals as $continentKey => $value) {
         foreach($animals[$continentKey] as $numberKey => $animalValue) {
-            $spacePosition = strpos($animals[$continentKey][$numberKey], ' ');
-            if ($spacePosition != '') {
-                $twoWordAnimals[$continentKey][$numberKey] = $animals[$continentKey][$numberKey];
+            // Заполняем эти массивы только когда второе слово в названии животного существует:
+            if (explode(' ', $animals[$continentKey][$numberKey])[1] != '') {
+                $firstWordArray[$continentKey][$numberKey] = explode(' ', $animals[$continentKey][$numberKey])[0];
+                $secondWordArray[$continentKey][$numberKey] = explode(' ', $animals[$continentKey][$numberKey])[1];
             }
         }
     }
 
-    // Создаем два массива - первый содержит первое слово названия, второй - соответственно второе:
-    $firstWordArray = [];
-    $secondWordArray = [];
-    foreach($twoWordAnimals as $continentKey => $value) {
-        foreach($twoWordAnimals[$continentKey] as $numberKey => $animalValue) {
-            $spacePosition = strpos($twoWordAnimals[$continentKey][$numberKey], ' ');
-            $firstWordArray[$continentKey][$numberKey] = substr($twoWordAnimals[$continentKey][$numberKey], 0, $spacePosition);
-            $secondWordArray[$continentKey][$numberKey] = substr($twoWordAnimals[$continentKey][$numberKey], $spacePosition);
-        }
-    }
-
-    // Заново индексируем массив первых слов числовыми ключами по возрастанию:
+    // Индексируем оба массива числовыми ключами по возрастанию:
     foreach($firstWordArray as $continentKey => $value) {
         foreach($firstWordArray[$continentKey] as $numberKey => $animalValue) {
             $firstWordArray[$continentKey] = array_values($firstWordArray[$continentKey]);
         }
-    }
-
-    // Смешиваем элементы массива вторых слов, а также индексируем числовыми ключами по возрастанию:
-    foreach($secondWordArray as $continentKey => $value) {
         foreach($secondWordArray[$continentKey] as $numberKey => $animalValue) {
+            // Смешиваем элементы массива вторых слов:
             shuffle($secondWordArray[$continentKey]);
         }
     }
@@ -148,9 +136,10 @@
     foreach($firstWordArray as $continentKey => $value) {
         $testArray[] = $continentKey;
         foreach($firstWordArray[$continentKey] as $numberKey => $animalValue) {
-            $randomWordArray[$continentKey][$numberKey] = $firstWordArray[$continentKey][$numberKey] . $secondWordArray[$continentKey][$numberKey];
+            $randomWordArray[$continentKey][$numberKey] = $firstWordArray[$continentKey][$numberKey] . ' ' . $secondWordArray[$continentKey][$numberKey];
         }
     }
+
 ?>
 
 <!DOCTYPE html>
