@@ -110,33 +110,29 @@
     $firstWordArray = [];
     $secondWordArray = [];
     foreach($animals as $continentKey => $value) {
-        foreach($animals[$continentKey] as $numberKey => $animalValue) {
+        foreach($value as $numberKey => $animalValue) {
+            $secondWordAnimal = explode(' ', $value[$numberKey])[1];
             // Заполняем эти массивы только когда второе слово в названии животного существует:
-            if (explode(' ', $animals[$continentKey][$numberKey])[1] != '') {
-                $firstWordArray[$continentKey][$numberKey] = explode(' ', $animals[$continentKey][$numberKey])[0];
-                $secondWordArray[$continentKey][$numberKey] = explode(' ', $animals[$continentKey][$numberKey])[1];
+            if ($secondWordAnimal != '') {
+                $firstWordAnimal = explode(' ', $value[$numberKey])[0];
+                $firstWordArray[$continentKey][] = $firstWordAnimal;
+                $secondWordArray[] = $secondWordAnimal;
             }
         }
     }
 
-    // Индексируем оба массива числовыми ключами по возрастанию:
-    foreach($firstWordArray as $continentKey => $value) {
-        foreach($firstWordArray[$continentKey] as $numberKey => $animalValue) {
-            $firstWordArray[$continentKey] = array_values($firstWordArray[$continentKey]);
-        }
-        foreach($secondWordArray[$continentKey] as $numberKey => $animalValue) {
-            // Смешиваем элементы массива вторых слов:
-            shuffle($secondWordArray[$continentKey]);
-        }
+    // Смешиваем элементы массива вторых слов:
+    foreach($firstWordArray as $numberKey => $animalValue) {
+        shuffle($secondWordArray);
     }
 
     // Склеиваем элементы массивов
     $randomWordArray = [];
-    $testArray = [];
+    $i = 0;
     foreach($firstWordArray as $continentKey => $value) {
-        $testArray[] = $continentKey;
-        foreach($firstWordArray[$continentKey] as $numberKey => $animalValue) {
-            $randomWordArray[$continentKey][$numberKey] = $firstWordArray[$continentKey][$numberKey] . ' ' . $secondWordArray[$continentKey][$numberKey];
+        foreach($value as $numberKey => $animalValue) {
+            $i++;
+            $randomWordArray[$continentKey][$numberKey] = $value[$numberKey] . ' ' . $secondWordArray[$i];
         }
     }
 
@@ -162,7 +158,7 @@
     </style>
     <body>
         <?
-            echo '<h1>Данный массив</h1>';
+            echo '<h1>Исходный массив</h1>';
             echo '<div class="continents">';
             foreach ($animals as $continentKey => $value) {
                 echo '<div class="continent">';
@@ -179,6 +175,7 @@
                 echo '</div>';
             }
             echo '</div>';
+
             echo '<h1>Измененный массив</h1>';
             echo '<div class="continents">';
             foreach ($randomWordArray as $continentKey => $value) {
