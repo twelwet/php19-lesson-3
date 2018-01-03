@@ -111,6 +111,10 @@
     $secondWordArray = [];
     foreach($animals as $continentKey => $value) {
         foreach($value as $numberKey => $animalValue) {
+            // Ваш комментарий:
+            // 'По идее здесь бы не второе слово присвоить в переменную, а всё что получилось.
+            // И посчитать, сколько же слов получилось. Тогда и explode не нужно будет 2 раза делать.'
+            // [Вопрос] Не совсем понял Ваш комментарий, можно подробнее?
             $secondWordAnimal = explode(' ', $value[$numberKey])[1];
             // Заполняем эти массивы только когда второе слово в названии животного существует:
             if ($secondWordAnimal != '') {
@@ -132,7 +136,7 @@
     foreach($firstWordArray as $continentKey => $value) {
         foreach($value as $numberKey => $animalValue) {
             $i++;
-            $randomWordArray[$continentKey][$numberKey] = $value[$numberKey] . ' ' . $secondWordArray[$i];
+            $randomWordArray[$continentKey][] = $animalValue . ' ' . $secondWordArray[$i];
         }
     }
 
@@ -157,42 +161,39 @@
         }
     </style>
     <body>
-        <?
-            echo '<h1>Исходный массив</h1>';
-            echo '<div class="continents">';
-            foreach ($animals as $continentKey => $value) {
-                echo '<div class="continent">';
-                echo '<h2>', $continentKey, '</h2>';
-                echo '<p>';
-                foreach($animals[$continentKey] as $numberKey => $animalValue) {
-                    if ($numberKey < (count($animals[$continentKey]) - 1)) {
-                        echo $animalValue, ', ';
-                    } else {
-                        echo $animalValue, '.';
-                    }
-                }
-                echo '</p>';
-                echo '</div>';
-            }
-            echo '</div>';
-
-            echo '<h1>Измененный массив</h1>';
-            echo '<div class="continents">';
-            foreach ($randomWordArray as $continentKey => $value) {
-                echo '<div class="continent">';
-                echo '<h2>', $continentKey, '</h2>';
-                echo '<p>';
-                foreach($randomWordArray[$continentKey] as $numberKey => $animalValue) {
-                    if ($numberKey < (count($randomWordArray[$continentKey]) - 1)) {
-                        echo $animalValue, ', ';
-                    } else {
-                        echo $animalValue, '.';
-                    }
-                }
-                echo '</p>';
-                echo '</div>';
-            }
-            echo '</div>';
-        ?>
+        <h1>Исходный массив</h1>
+        <div class="continents">
+        <? foreach ($animals as $continentKey => $value) { ?>
+            <div class="continent">
+                <h2><?= $continentKey ?></h2>
+                <p>
+                    <? foreach($animals[$continentKey] as $numberKey => $animalValue) {
+                        if ($numberKey < (count($animals[$continentKey]) - 1)) {
+                            print_r($animalValue . ', ');
+                        } else {
+                            print_r($animalValue . '.');
+                        }
+                    } ?>
+                </p>
+            </div>
+        <? } ?>
+        </div>
+        <h1>Измененный массив</h1>
+        <div class="continents">
+        <? foreach ($randomWordArray as $continentKey => $value) { ?>
+            <div class="continent">
+                <h2><?= $continentKey ?></h2>
+                <p>
+                    <? foreach($randomWordArray[$continentKey] as $numberKey => $animalValue) {
+                        if ($numberKey < (count($randomWordArray[$continentKey]) - 1)) {
+                            print_r($animalValue . ', ');
+                        } else {
+                            print_r($animalValue . '.');
+                        }
+                    } ?>
+                </p>
+            </div>
+        <? } ?>
+        </div>
     </body>
 </html>
