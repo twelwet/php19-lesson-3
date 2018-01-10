@@ -109,18 +109,14 @@
     // Создаем два массива - первый содержит первое слово названия, второй - соответственно второе:
     $firstWordArray = [];
     $secondWordArray = [];
+    $twoWordArray = [];
     foreach($animals as $continentKey => $value) {
         foreach($value as $numberKey => $animalValue) {
-            // Ваш комментарий:
-            // 'По идее здесь бы не второе слово присвоить в переменную, а всё что получилось.
-            // И посчитать, сколько же слов получилось. Тогда и explode не нужно будет 2 раза делать.'
-            // [Вопрос] Не совсем понял Ваш комментарий, можно подробнее?
-            $secondWordAnimal = explode(' ', $value[$numberKey])[1];
+            $twoWordArray = explode(' ', $animalValue);
             // Заполняем эти массивы только когда второе слово в названии животного существует:
-            if ($secondWordAnimal != '') {
-                $firstWordAnimal = explode(' ', $value[$numberKey])[0];
-                $firstWordArray[$continentKey][] = $firstWordAnimal;
-                $secondWordArray[] = $secondWordAnimal;
+            if ($twoWordArray[1] != null) {
+                $firstWordArray[$continentKey][] = $twoWordArray[0];
+                $secondWordArray[] = $twoWordArray[1];
             }
         }
     }
@@ -166,15 +162,7 @@
         <? foreach ($animals as $continentKey => $value) { ?>
             <div class="continent">
                 <h2><?= $continentKey ?></h2>
-                <p>
-                    <? foreach($animals[$continentKey] as $numberKey => $animalValue) {
-                        if ($numberKey < (count($animals[$continentKey]) - 1)) {
-                            print_r($animalValue . ', ');
-                        } else {
-                            print_r($animalValue . '.');
-                        }
-                    } ?>
-                </p>
+                <p><? echo implode(', ' , $animals[$continentKey]) . '.' ; ?></p>
             </div>
         <? } ?>
         </div>
@@ -183,15 +171,7 @@
         <? foreach ($randomWordArray as $continentKey => $value) { ?>
             <div class="continent">
                 <h2><?= $continentKey ?></h2>
-                <p>
-                    <? foreach($randomWordArray[$continentKey] as $numberKey => $animalValue) {
-                        if ($numberKey < (count($randomWordArray[$continentKey]) - 1)) {
-                            print_r($animalValue . ', ');
-                        } else {
-                            print_r($animalValue . '.');
-                        }
-                    } ?>
-                </p>
+                <p><? echo implode(', ' , $randomWordArray[$continentKey]) . '.'; ?></p>
             </div>
         <? } ?>
         </div>
